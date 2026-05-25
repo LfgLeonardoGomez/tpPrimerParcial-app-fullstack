@@ -17,6 +17,7 @@ class IngredienteUpdate(SQLModel):
 
 class IngredienteResponse(IngredienteBase):
     id: int
+    disponible: bool = Field (default= True)
     productos: List[ProductoSimple] = Field(default_factory=list)
 
     model_config = {"from_attributes": True}
@@ -27,6 +28,6 @@ class IngredienteList(SQLModel):
 
 class IngredienteRead(IngredienteBase):
     id: int
-
+    disponible: bool = Field(default= True)
     model_config = {"from_attributes": True}
     
