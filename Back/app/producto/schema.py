@@ -26,6 +26,10 @@ class ProductoCategoriasUpdate(SQLModel):
 
 class ProductoIngredientesUpdate(SQLModel):
     ingredientes: list[int] = Field(default_factory=list)
+
+class ProductoStockUpdate(SQLModel):
+    stock_cantidad: Optional[int] = Field(default=None, ge=0)
+    disponible: Optional[bool] = None
     
 class ProductoSimple(SQLModel):
     id: int

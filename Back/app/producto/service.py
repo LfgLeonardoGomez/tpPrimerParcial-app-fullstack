@@ -1,6 +1,6 @@
 from typing import Optional, List
 from fastapi import HTTPException, status
-from app.producto.schema import ProductoCreate, ProductoList, ProductoRead, ProductoResponse, ProductoUpdate
+from app.producto.schema import ProductoCreate, ProductoList, ProductoRead, ProductoResponse, ProductoUpdate, ProductoStockUpdate
 from app.producto.model import Producto
 from app.core.uow import UnitOfWork
 
@@ -116,5 +116,18 @@ class ProductoService:
 
             producto_actualizado : Producto = uow.productos.update_ingredientes(producto, ingredientes_encontrados)
             return ProductoRead.model_validate(producto_actualizado)
+
+    def actualizar_stock_producto(self, producto_id: int, data: ProductoStockUpdate) -> ProductoRead:
+        with UnitOfWork() as uow:
+            producto = uow.productos.get_by_id(producto_id)
+            if not producto:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="Producto no encontrado"
+                )
+            for key, value in data.model_dump(exclude_unset=True).items():
+                setattr(producto, key, value)
+            uow.productos.update(producto)
+            return ProductoRead.model_validate(producto)
 
 producto_service = ProductoService()

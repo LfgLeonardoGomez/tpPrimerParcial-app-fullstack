@@ -1,7 +1,8 @@
 from typing import List, Annotated
-from fastapi import APIRouter,HTTPException, status, Query
+from fastapi import APIRouter,HTTPException, status, Query, Depends
 from app.producto.service import ProductoService
-from app.producto.schema import ProductoCategoriasUpdate, ProductoCreate, ProductoIngredientesUpdate, ProductoList, ProductoRead, ProductoResponse, ProductoUpdate
+from app.core.deps import require_role
+from app.producto.schema import ProductoCategoriasUpdate, ProductoCreate, ProductoIngredientesUpdate, ProductoList, ProductoRead, ProductoResponse, ProductoStockUpdate, ProductoUpdate
 
 router = APIRouter(prefix="/productos", tags=["productos"])
 
@@ -27,6 +28,14 @@ def update_producto(producto_id: int, producto: ProductoUpdate):
 @router.delete("/{producto_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_producto(producto_id: int):
     return ProductoService().eliminar_producto(producto_id)
+
+@router.patch(
+    "/{producto_id}/stock",
+    response_model=ProductoRead,
+    dependencies=[Depends(require_role(["ADMIN", "STOCK"]))]
+)
+def update_stock_producto(producto_id: int, data: ProductoStockUpdate):
+    return ProductoService().actualizar_stock_producto(producto_id, data)
 
 @router.put("/{producto_id}/categorias", response_model=ProductoRead)
 def update_producto_categorias(producto_id: int, data: ProductoCategoriasUpdate):
