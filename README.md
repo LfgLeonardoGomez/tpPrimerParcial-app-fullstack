@@ -1,31 +1,133 @@
-# Sistema de Gestión para Local Gastronómico
+# FoodStore — Backend API
 
-Este proyecto consiste en una aplicación fullstack orientada a la administración de un local gastronómico, permitiendo gestionar de forma simple y organizada las principales entidades del negocio: categorías, productos e ingredientes.
+*Trabajo Práctico — Programación 4*  
+*UTN — Facultad Regional Mendoza*
 
-El sistema fue desarrollado con una arquitectura separada entre frontend y backend:
+---
 
-* **Frontend:** desarrollado con React + TypeScript + Vite + TailwindCSS, utilizando TanStack Query para el manejo de estado asíncrono y consumo de la API.
-* **Backend:** desarrollado con FastAPI + SQLModel + PostgreSQL, aplicando una arquitectura basada en capas con Service, Repository y Unit of Work para mantener una mejor organización y escalabilidad del proyecto.
+## Integrantes
 
-## Funcionalidades principales
+| Nombre | Apellido |
+|--------|----------|
+| Leonardo | Gómez |
+| Nicolás | Castro |
 
-* CRUD completo de Categorías
-* CRUD completo de Productos
-* CRUD completo de Ingredientes
-* Asignación de categorías a productos
-* Asignación de ingredientes a productos
-* Visualización en formato tabla
-* Modales para detalle, creación, edición y eliminación
-* Validaciones de datos tanto en frontend como backend
-* Manejo de excepciones con HTTPException
-* Paginación mediante Query Parameters (`offset` y `limit`)
+---
 
-## Objetivo del proyecto
+## Descripción del Proyecto
 
-El objetivo principal fue aplicar buenas prácticas de desarrollo fullstack, integrando frontend y backend de forma profesional, utilizando patrones de diseño, validaciones, manejo de errores y una estructura escalable que permita continuar expandiendo el sistema a futuro.
+Este repositorio contiene el *backend* de *FoodStore*, una aplicación fullstack de pedidos de comida. La API expone endpoints RESTful para gestionar el catálogo de productos (pizzas, empanadas, hamburguesas, bebidas), usuarios, pedidos, direcciones de entrega, estados de pedido, historial de cambios, formas de pago y más.
+
+El servidor se encarga de:
+
+- Exponer una API REST segura con autenticación JWT.
+- Gestionar la persistencia de datos con PostgreSQL a través de SQLModel.
+- Precargar automáticamente el catálogo de productos al iniciar (seed integrado).
+- Habilitar CORS para comunicación con el frontend en desarrollo.
+
+---
+
+## Tecnologías
+
+| Tecnología | Uso |
+|------------|-----|
+| *Python 3* | Lenguaje principal |
+| *FastAPI* | Framework web para APIs de alto rendimiento |
+| *SQLModel* | ORM/Modelado de datos sobre SQLAlchemy |
+| *PostgreSQL* | Base de datos relacional |
+| *Uvicorn* | Servidor ASGI para ejecutar la aplicación |
+| *Pydantic* | Validación y serialización de datos |
+| *python-jose* | Manejo de tokens JWT |
+| *passlib + bcrypt* | Hashing seguro de contraseñas |
+| *python-dotenv* | Carga de variables de entorno desde .env |
+| *python-multipart* | Soporte para formularios multipart |
+
+---
+
+## Requisitos Previos
+
+- Python 3.10+ instalado
+- PostgreSQL corriendo localmente (o accesible remotamente)
+- Variables de entorno configuradas en un archivo .env en la raíz del proyecto
+
+---
+
+## Instalación
+
+1. *Crear y activar el entorno virtual:*
+
+   bash
+   python -m venv .venv
+   .venv\Scripts\activate
+   
+
+2. *Instalar dependencias:*
+
+   bash
+   pip install -r requirements.txt
+   
+
+3. *Configurar variables de entorno:*
+
+   Crear un archivo .env en la raíz con los datos de conexión a la base de datos y demás configuraciones necesarias.
+
+---
+
+## Levantar el Servidor
+
+Desde la raíz del proyecto, ejecutar:
+
+bash
+uvicorn app.main:app --reload
+
+
+Por defecto, el servidor estará disponible en:
+
+- *URL base:* http://127.0.0.1:8000
+- *Documentación interactiva (Swagger UI):* http://127.0.0.1:8000/docs
+- *Documentación alternativa (ReDoc):* http://127.0.0.1:8000/redoc
+
+---
+
+## Seed de Datos
+
+El proyecto incluye un *seed automático* que se ejecuta al levantar el servidor. Esto significa que:
+
+- Las tablas se crean automáticamente si no existen.
+- El catálogo inicial de productos (pizzas, empanadas, hamburguesas y bebidas) se precarga solo al iniciar la aplicación.
+
+No es necesario correr ningún script extra.
+
+---
+
+## Estructura de Módulos
+
+
+app/
+├── categoria/           # Gestión de categorías de productos
+├── core/                # Configuración central, base de datos, seed, UoW
+├── db/                  # Scripts y utilidades de base de datos
+├── detallepedido/       # Líneas de detalle de cada pedido
+├── direccioentrega/     # Direcciones de entrega de los usuarios
+├── estadopedido/        # Estados posibles de un pedido
+├── formadepago/         # Medios de pago disponibles
+├── historialestadopedido/  # Historial de cambios de estado
+├── ingrediente/         # Ingredientes y su stock
+├── main.py              # Punto de entrada de la aplicación
+├── pedido/              # Gestión de pedidos
+├── producto/            # Catálogo de productos
+├── rol/                 # Roles de usuario
+└── usuarios/            # Gestión de usuarios y autenticación
+
+
+---
+
+## Licencia
+
+Proyecto académico — UTN FRM, Programación 4.
 
 ## Video de presentación
 
 Link al video explicativo del proyecto:
 
-https://drive.google.com/file/d/1Sz6D6OHlMbqje2gP7T3dfI8HktfiI5xL/view?usp=drive_link
+https://youtu.be/4odNGl1uBh0
