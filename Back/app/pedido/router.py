@@ -36,7 +36,7 @@ def traer_pedidos_por_cliente(
 # traer todos los pedidos - solo admin
 
 @router.get("/", response_model = PedidoList, status_code = status.HTTP_200_OK)
-def traer_todos(admin: Annotated[Usuario, Depends(require_role(["ADMIN"]))]):
+def traer_todos(admin: Annotated[Usuario, Depends(require_role(["ADMIN", "PEDIDOS"]))]):
     return service.traer_todos_los_pedidos()
 
 # traer pedidos por estado
@@ -44,7 +44,7 @@ def traer_todos(admin: Annotated[Usuario, Depends(require_role(["ADMIN"]))]):
 @router.get("/admin/estado/{estado}", response_model = PedidoList, status_code = status.HTTP_200_OK)
 def traer_pedidos_por_estado(
     estado: str,
-    admin: Annotated[Usuario,Depends(require_role(["ADMIN"]))]
+    admin: Annotated[Usuario,Depends(require_role(["ADMIN", "PEDIDOS"]))]
     ):
     return service.traer_pedidos_por_estado(estado)
 
