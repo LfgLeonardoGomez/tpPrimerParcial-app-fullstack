@@ -15,4 +15,10 @@ class Settings(BaseSettings):
         "extra":             "ignore",   # ignora vars extra del .env (ej. DATABASE_URL literal)
     }
 
+# ___ CLOUDINARY _____
+
+    cloudinary_cloud_name: str = ""
+    cloudinary_api_key:    str = ""
+    cloudinary_api_secret: str = ""
+    
 settings = Settings()
