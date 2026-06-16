@@ -37,12 +37,12 @@ class PedidoRepository:
     def create(self, pedido_data: dict) -> Pedido:
         pedido = Pedido(**pedido_data)
         self.session.add(pedido)
-        self.session.commit()
+        self.session.flush()
         self.session.refresh(pedido)
         return pedido
     
     def update(self, pedido: Pedido) -> Pedido:
         self.session.add(pedido)
-        self.session.commit()
+        self.session.flush()
         self.session.refresh(pedido)
         return pedido

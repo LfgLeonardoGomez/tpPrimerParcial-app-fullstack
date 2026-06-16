@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 from app.categoria.model import Categoria
 from app.producto.model import Producto
 from app.core.models import ProductoCategoria
+from app.pago.model import Pago
+from app.formadepago.model import FormaDePago
 
 # Cargar variables de entorno
 load_dotenv()

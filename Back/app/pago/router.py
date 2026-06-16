@@ -10,7 +10,7 @@ from app.pago.schema import ConfirmPagoRequest, PagoCreate, PagoEstadoResponse, 
 from app.pago.service import PagoService
 from app.usuarios.model import Usuario
 
-router = APIRouter(prefix="/api/v1/pagos", tags=["Pagos"])
+router = APIRouter(prefix="/pagos", tags=["Pagos"])
 
 service = PagoService()
 logger = logging.getLogger(__name__)

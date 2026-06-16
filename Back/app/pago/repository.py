@@ -30,12 +30,12 @@ class PagoRepository:
 
     def create(self, pago: Pago) -> Pago:
         self.session.add(pago)
-        self.session.commit()
+        self.session.flush()
         self.session.refresh(pago)
         return pago
 
     def update(self, pago: Pago) -> Pago:
         self.session.add(pago)
-        self.session.commit()
+        self.session.flush()
         self.session.refresh(pago)
         return pago

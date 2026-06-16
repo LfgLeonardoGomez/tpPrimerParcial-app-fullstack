@@ -12,7 +12,7 @@ class HistorialEstadoPedidoRepository:
 
     def create(self, historial_pedido_estado):
         self.session.add(historial_pedido_estado)
-        self.session.commit()
+        self.session.flush()
         self.session.refresh(historial_pedido_estado)
         return historial_pedido_estado
     

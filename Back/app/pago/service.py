@@ -27,6 +27,12 @@ class PagoService:
                     detail="Pedido no encontrado"
                 )
 
+            if pedido.estado_codigo == "pagado":
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="El pedido ya está pagado"
+                )
+
             if not settings.MP_ACCESS_TOKEN:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
@@ -35,9 +41,9 @@ class PagoService:
             
             ngrok_url = settings.NGROK_URL or "http://localhost:8000"
             back_urls = {
-                "success": f"{ngrok_url}/api/v1/pagos/redirect/{pedido_id}/success",
-                "failure": f"{ngrok_url}/api/v1/pagos/redirect/{pedido_id}/failure",
-                "pending": f"{ngrok_url}/api/v1/pagos/redirect/{pedido_id}/pending"
+                "success": f"{ngrok_url}/pagos/redirect/{pedido_id}/success",
+                "failure": f"{ngrok_url}/pagos/redirect/{pedido_id}/failure",
+                "pending": f"{ngrok_url}/pagos/redirect/{pedido_id}/pending"
             }
 
             try:
@@ -202,7 +208,7 @@ class PagoService:
             return PagoEstadoResponse(
                 pago_id=pago.id,
                 pedido_id=pago.pedido_id,
-                mp_status=pago.estado,
+                mp_status=pago.mp_status,
                 mp_payment_id=pago.mp_payment_id
             )
 
