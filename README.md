@@ -1,7 +1,10 @@
 # FoodStore — Backend API
 
-*Trabajo Práctico — Programación 4*  
-*UTN — Facultad Regional Mendoza*
+**Trabajo Práctico — Programación 4**  
+**UTN — Facultad Regional Mendoza**
+
+> Parte del proyecto Food Store TPI Programación 4.  
+> Repos relacionados: [Panel Admin](https://github.com/LfgLeonardoGomez/admin-app-food-store-final-) · [Tienda Cliente](https://github.com/LfgLeonardoGomez/store-app-food-store-final)
 
 ---
 
@@ -16,14 +19,17 @@
 
 ## Descripción del Proyecto
 
-Este repositorio contiene el *backend* de *FoodStore*, una aplicación fullstack de pedidos de comida. La API expone endpoints RESTful para gestionar el catálogo de productos (pizzas, empanadas, hamburguesas, bebidas), usuarios, pedidos, direcciones de entrega, estados de pedido, historial de cambios, formas de pago y más.
+Este repositorio contiene el **backend** de **FoodStore**, una aplicación fullstack de pedidos de comida. La API expone endpoints RESTful para gestionar el catálogo de productos, usuarios, pedidos, direcciones de entrega, pagos y más.
 
 El servidor se encarga de:
 
-- Exponer una API REST segura con autenticación JWT.
-- Gestionar la persistencia de datos con PostgreSQL a través de SQLModel.
-- Precargar automáticamente el catálogo de productos al iniciar (seed integrado).
-- Habilitar CORS para comunicación con el frontend en desarrollo.
+- Exponer una API REST segura con autenticación JWT y RBAC (4 roles)
+- Gestionar la persistencia de datos con PostgreSQL a través de SQLModel
+- Notificar cambios de estado de pedidos en tiempo real vía WebSocket
+- Procesar pagos con MercadoPago Checkout PRO
+- Gestionar imágenes de productos y categorías en Cloudinary
+- Precargar datos iniciales automáticamente al iniciar (seed integrado)
+- Aplicar rate limiting en endpoints de autenticación
 
 ---
 
@@ -31,103 +37,99 @@ El servidor se encarga de:
 
 | Tecnología | Uso |
 |------------|-----|
-| *Python 3* | Lenguaje principal |
-| *FastAPI* | Framework web para APIs de alto rendimiento |
-| *SQLModel* | ORM/Modelado de datos sobre SQLAlchemy |
-| *PostgreSQL* | Base de datos relacional |
-| *Uvicorn* | Servidor ASGI para ejecutar la aplicación |
-| *Pydantic* | Validación y serialización de datos |
-| *python-jose* | Manejo de tokens JWT |
-| *passlib + bcrypt* | Hashing seguro de contraseñas |
-| *python-dotenv* | Carga de variables de entorno desde .env |
-| *python-multipart* | Soporte para formularios multipart |
+| **Python 3** | Lenguaje principal |
+| **FastAPI** | Framework web para APIs de alto rendimiento |
+| **SQLModel** | ORM/Modelado de datos sobre SQLAlchemy |
+| **PostgreSQL** | Base de datos relacional |
+| **Uvicorn** | Servidor ASGI para ejecutar la aplicación |
+| **Pydantic** | Validación y serialización de datos |
+| **python-jose** | Manejo de tokens JWT |
+| **passlib + bcrypt** | Hashing seguro de contraseñas |
+| **WebSocket** | Notificaciones en tiempo real de estados de pedido |
+| **Cloudinary** | Almacenamiento y gestión de imágenes |
+| **MercadoPago** | Pasarela de pagos (Checkout PRO) |
+| **slowapi** | Rate limiting en endpoints de autenticación |
+| **python-dotenv** | Carga de variables de entorno desde `.env` |
+| **python-multipart** | Soporte para formularios multipart |
 
 ---
 
 ## Requisitos Previos
 
-- Python 3.10+ instalado
-- PostgreSQL corriendo localmente (o accesible remotamente)
-- Variables de entorno configuradas en un archivo .env en la raíz del proyecto
+- Python 3.10+
+- PostgreSQL 15+ corriendo localmente
 
 ---
 
 ## Instalación
 
-1. *Crear y activar el entorno virtual:*
+1. **Crear y activar el entorno virtual:**
 
-   bash
+   ```bash
    python -m venv .venv
    .venv\Scripts\activate
-   
+   ```
 
-2. *Instalar dependencias:*
+2. **Instalar dependencias:**
 
-   bash
+   ```bash
    pip install -r requirements.txt
-   
+   ```
 
-3. *Configurar variables de entorno:*
+3. **Configurar variables de entorno:**
 
-   Crear un archivo .env en la raíz con los datos de conexión a la base de datos y demás configuraciones necesarias.
+   ```bash
+   cp .env.example .env
+   ```
+
+   Completar `.env` con las credenciales de base de datos, Cloudinary y MercadoPago.
 
 ---
 
 ## Levantar el Servidor
 
-Desde la raíz del proyecto, ejecutar:
-
-bash
+```bash
 uvicorn app.main:app --reload
+```
 
+- **URL base:** `http://localhost:8000`
+- **Swagger UI:** `http://localhost:8000/docs`
+- **ReDoc:** `http://localhost:8000/redoc`
 
-Por defecto, el servidor estará disponible en:
-
-- *URL base:* http://127.0.0.1:8000
-- *Documentación interactiva (Swagger UI):* http://127.0.0.1:8000/docs
-- *Documentación alternativa (ReDoc):* http://127.0.0.1:8000/redoc
+Las tablas y el seed se ejecutan automáticamente al iniciar.
 
 ---
 
-## Seed de Datos
+## Credenciales seed
 
-El proyecto incluye un *seed automático* que se ejecuta al levantar el servidor. Esto significa que:
-
-- Las tablas se crean automáticamente si no existen.
-- El catálogo inicial de productos (pizzas, empanadas, hamburguesas y bebidas) se precarga solo al iniciar la aplicación.
-
-No es necesario correr ningún script extra.
+| Rol | Email | Contraseña |
+|-----|-------|------------|
+| Admin | admin@foodstore.com | admin1234 |
+| Stock | stock@foodstore.com | stock1234 |
+| Pedidos | pedidos@foodstore.com | pedidos1234 |
 
 ---
 
 ## Estructura de Módulos
 
-
+```
 app/
-├── categoria/           # Gestión de categorías de productos
-├── core/                # Configuración central, base de datos, seed, UoW
-├── db/                  # Scripts y utilidades de base de datos
-├── detallepedido/       # Líneas de detalle de cada pedido
-├── direccioentrega/     # Direcciones de entrega de los usuarios
-├── estadopedido/        # Estados posibles de un pedido
-├── formadepago/         # Medios de pago disponibles
-├── historialestadopedido/  # Historial de cambios de estado
-├── ingrediente/         # Ingredientes y su stock
-├── main.py              # Punto de entrada de la aplicación
-├── pedido/              # Gestión de pedidos
-├── producto/            # Catálogo de productos
-├── rol/                 # Roles de usuario
-└── usuarios/            # Gestión de usuarios y autenticación
-
+├── core/                # Configuración, BD, seed, UoW, WebSocket
+├── modules/
+│   ├── auth/            # Login, registro, refresh, logout
+│   ├── usuarios/        # CRUD usuarios y roles
+│   ├── categoria/       # Categorías de productos
+│   ├── producto/        # Catálogo de productos
+│   ├── ingrediente/     # Ingredientes
+│   ├── pedido/          # Gestión de pedidos + WebSocket
+│   ├── pago/            # Integración MercadoPago
+│   ├── uploads/         # Upload/delete imágenes Cloudinary
+│   └── direccioentrega/ # Direcciones de entrega
+└── main.py              # Punto de entrada
+```
 
 ---
 
-## Licencia
-
-Proyecto académico — UTN FRM, Programación 4.
-
 ## Video de presentación
 
-Link al video explicativo del proyecto:
-
-https://youtu.be/4odNGl1uBh0
+[Pendiente — se actualizará antes de la entrega]
