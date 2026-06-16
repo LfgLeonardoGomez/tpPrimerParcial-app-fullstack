@@ -1,5 +1,5 @@
 from app.core.uow import UnitOfWork
-from app.producto.model import Producto
+from app.modules.producto.model import Producto
 
 
 

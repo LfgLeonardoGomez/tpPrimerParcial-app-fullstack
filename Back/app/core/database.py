@@ -5,10 +5,10 @@ from sqlalchemy.engine import Engine
 from dotenv import load_dotenv
 
 # Importar todos los modelos para que SQLModel los registre
-from app.categoria.model import Categoria
-from app.producto.model import Producto
+from app.modules.categoria.model import Categoria
+from app.modules.producto.model import Producto
 from app.core.models import ProductoCategoria
-from app.pago.model import Pago
+from app.modules.pago.model import Pago
 from app.formadepago.model import FormaDePago
 
 # Cargar variables de entorno

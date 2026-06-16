@@ -24,8 +24,8 @@ from fastapi.security import OAuth2PasswordBearer
 
 from app.core.security import decode_access_token
 from app.core.uow import UnitOfWork, get_uow
-from app.usuarios.model import Usuario
-from app.usuarios.schemas import UsuarioPublico
+from app.modules.usuarios.model import Usuario
+from app.modules.usuarios.schemas import UsuarioPublico
 
 
 class OAuth2PasswordBearerWithCookie(OAuth2PasswordBearer):

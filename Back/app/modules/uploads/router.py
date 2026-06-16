@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, UploadFile, File
 from app.core.deps import require_role
 from app.modules.uploads.schemas import CloudinaryResponse
 from app.modules.uploads.service import UploadsService
-from app.usuarios.schemas import UsuarioPublico
+from app.modules.usuarios.schemas import UsuarioPublico
 
 router= APIRouter(prefix= "/api/v1/uploads", tags=["uploads"])
 

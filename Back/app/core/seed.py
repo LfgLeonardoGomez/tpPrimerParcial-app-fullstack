@@ -1,7 +1,7 @@
 from app.core.security import hash_password
 from app.core.uow import UnitOfWork
 from app.rol.model import Rol
-from app.usuarios.model import Usuario
+from app.modules.usuarios.model import Usuario
 from app.formadepago.model import FormaDePago
 from app.estadopedido.model import EstadoPedido
 

@@ -1,19 +1,23 @@
 
 from fastapi import FastAPI, Response
 from fastapi.responses import RedirectResponse
-from app.categoria.router import router as categoria_router
-from app.producto.router import router as producto_router
-from app.ingrediente.router import router as ingrediente_router
-from app.usuarios.router import router as usuario_router
-from app.direccioentrega.router import router as direccionentrega_router
+from slowapi.errors import RateLimitExceeded
+from slowapi import _rate_limit_exceeded_handler
+from app.core.limiter import limiter
+from app.modules.categoria.router import router as categoria_router
+from app.modules.producto.router import router as producto_router
+from app.modules.ingrediente.router import router as ingrediente_router
+from app.modules.usuarios.router import router as usuario_router
+from app.modules.direccioentrega.router import router as direccionentrega_router
 from app.detallepedido.router import router as detalle_pedido_router
-from app.pedido.router import router as pedido_router
+from app.modules.pedido.router import router as pedido_router
 from app.modules.uploads.router import router as uploads_router
-from app.pago.router import router as pagos_router
+from app.modules.pago.router import router as pagos_router
 from app.core.database import create_db_and_tables
 from app.core.seed import seed_data
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
+
 
 
 
@@ -25,6 +29,8 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(lifespan=lifespan)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     CORSMiddleware,

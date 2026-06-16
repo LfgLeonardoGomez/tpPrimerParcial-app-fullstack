@@ -5,7 +5,7 @@ from sqlmodel import Field, Relationship, SQLModel
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy import Column
 if TYPE_CHECKING:
-    from app.pedido.model import Pedido
+    from app.modules.pedido.model import Pedido
 
 class DetallePedido(SQLModel, table = True):
     __tablename__ = "detalle_pedidos"

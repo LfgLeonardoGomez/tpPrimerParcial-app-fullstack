@@ -7,7 +7,7 @@ from sqlmodel import Field, Relationship, SQLModel
 from app.core.models import UsuarioRol
 
 if TYPE_CHECKING:
-    from app.usuarios.model import Usuario
+    from app.modules.usuarios.model import Usuario
 
 
 class Rol(SQLModel, table = True):

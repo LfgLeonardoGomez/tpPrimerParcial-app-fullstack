@@ -7,9 +7,9 @@ from sqlalchemy import Column, BigInteger, String, Text, DateTime, ForeignKey
 
 
 if TYPE_CHECKING:
-    from app.pedido.model import Pedido
+    from app.modules.pedido.model import Pedido
     from app.estadopedido.model import EstadoPedido
-    from app.usuarios.model import Usuario
+    from app.modules.usuarios.model import Usuario
 
 
 class HistorialEstadoPedido(SQLModel, table=True):

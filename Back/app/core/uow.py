@@ -2,19 +2,19 @@ from typing import Generator
 
 from sqlmodel import Session
 from app.core.database import get_engine
-from app.categoria.repository import CategoriaRepository
+from app.modules.categoria.repository import CategoriaRepository
 from app.detallepedido.repository import DetallePedidoRepository
-from app.direccioentrega.repository import DireccionEntregaRepository
+from app.modules.direccioentrega.repository import DireccionEntregaRepository
 from app.estadopedido.repository import EstadoPedidoRepository
 from app.formadepago.repository import FormaDePagoRepository
 from app.historialestadopedido.model import HistorialEstadoPedido
 from app.historialestadopedido.repository import HistorialEstadoPedidoRepository
-from app.ingrediente.repository import IngredienteRepository
-from app.pago.repository import PagoRepository
-from app.pedido.repository import PedidoRepository
-from app.producto.repository import ProductoRepository
+from app.modules.ingrediente.repository import IngredienteRepository
+from app.modules.pago.repository import PagoRepository
+from app.modules.pedido.repository import PedidoRepository
+from app.modules.producto.repository import ProductoRepository
 from app.rol.repository import RolRepository
-from app.usuarios.repository import UsuarioRepository
+from app.modules.usuarios.repository import UsuarioRepository
 
 class UnitOfWork:
     def __init__(self):
